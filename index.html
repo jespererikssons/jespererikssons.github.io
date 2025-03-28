@@ -1,15 +1,22 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Analytics Demo</title>
+    <link rel="stylesheet" href="css/styles.css">
+
     <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-WC7N8R72');</script>
+    <script>
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});
+        var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;j.onerror=function(){console.error('GTM failed to load');};
+        f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-WC7N8R72');
+    </script>
     <!-- End Google Tag Manager -->
 
-    <!-- Google tag (gtag.js) -->
+    <!-- Google Analytics (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-8HZC8MLS6G"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -18,33 +25,30 @@
         gtag('config', 'G-8HZC8MLS6G');
     </script>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Analytics Demo</title>
-    <link rel="stylesheet" href="css/styles.css">
-
     <!-- Initialisera dataLayer -->
     <script>
         window.dataLayer = window.dataLayer || [];
     </script>
 
-    <!-- Analytics Script (ladda före sidinnehåll) -->
-    <script src="js/analytics.js"></script>
+    <!-- Analytics Script (deferred for performance) -->
+    <script src="js/analytics.js" defer onerror="console.error('Failed to load analytics.js');"></script>
 </head>
 <body>
     <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WC7N8R72"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WC7N8R72"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
     <!-- End Google Tag Manager (noscript) -->
 
     <header>
         <h1>Web Analytics Demo</h1>
         <nav>
             <ul>
-                <li><a href="#" id="home-link">Hem</a></li>
-                <li><a href="#" id="products-link">Produkter</a></li>
-                <li><a href="#" id="about-link">Om oss</a></li>
-                <li><a href="#" id="contact-link">Kontakt</a></li>
+                <li><a href="#" id="home-link" aria-label="Gå till startsidan">Hem</a></li>
+                <li><a href="#" id="products-link" aria-label="Visa produkter">Produkter</a></li>
+                <li><a href="#" id="about-link" aria-label="Läs om oss">Om oss</a></li>
+                <li><a href="#" id="contact-link" aria-label="Kontakta oss">Kontakt</a></li>
             </ul>
         </nav>
     </header>
@@ -53,7 +57,7 @@
         <section id="hero">
             <h2>Välkommen till vår dataLayer-demo</h2>
             <p>Denna sida demonstrerar hur man använder dataLayer för webbanalys.</p>
-            <button id="cta-button">Klicka här!</button>
+            <button id="cta-button" aria-label="Klicka för att lära dig mer">Klicka här!</button>
         </section>
 
         <section id="products">
@@ -62,17 +66,17 @@
                 <div class="product" data-product-id="123" data-product-name="Produkt A" data-product-price="19.99">
                     <h3>Produkt A</h3>
                     <p>199 kr</p>
-                    <button class="add-to-cart">Lägg i kundvagn</button>
+                    <button class="add-to-cart" aria-label="Lägg Produkt A i kundvagnen">Lägg i kundvagn</button>
                 </div>
                 <div class="product" data-product-id="456" data-product-name="Produkt B" data-product-price="29.99">
                     <h3>Produkt B</h3>
                     <p>299 kr</p>
-                    <button class="add-to-cart">Lägg i kundvagn</button>
+                    <button class="add-to-cart" aria-label="Lägg Produkt B i kundvagnen">Lägg i kundvagn</button>
                 </div>
                 <div class="product" data-product-id="789" data-product-name="Produkt C" data-product-price="39.99">
                     <h3>Produkt C</h3>
                     <p>399 kr</p>
-                    <button class="add-to-cart">Lägg i kundvagn</button>
+                    <button class="add-to-cart" aria-label="Lägg Produkt C i kundvagnen">Lägg i kundvagn</button>
                 </div>
             </div>
         </section>
@@ -81,5 +85,25 @@
     <footer>
         <p>&copy; 2025 Web Analytics Demo</p>
     </footer>
+
+    <!-- Event Tracking Script -->
+    <script>
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', event => {
+                const product = event.target.closest('.product');
+                window.dataLayer.push({
+                    event: 'add_to_cart',
+                    product_id: product.dataset.productId,
+                    product_name: product.dataset.productName,
+                    product_price: product.dataset.productPrice
+                });
+                console.log('Add to Cart event tracked:', {
+                    product_id: product.dataset.productId,
+                    product_name: product.dataset.productName,
+                    product_price: product.dataset.productPrice
+                });
+            });
+        });
+    </script>
 </body>
 </html>
