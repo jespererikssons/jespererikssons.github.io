@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Joke Fetcher</title>
+</head>
+<body>
+  <h1>Random Joke</h1>
+  <div id="joke"></div>
+  <script>
+fetch('https://official-joke-api.appspot.com/random_joke')
+  .then(response => response.json())
+  .then(data => {
+    document.getElementById('joke').innerHTML = `${data.setup} <br> ${data.punchline}`;
+  });
+
+  </script>
+</body>
+</html>
