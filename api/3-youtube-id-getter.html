@@ -9,6 +9,25 @@
   <input id="handle" placeholder="Enter handle (e.g., @MrBeast)">
   <button onclick="getChannelId()">Get Channel ID</button>
   <div id="result"></div>
+  const apiKey = 'YOUR_API_KEY_HERE';
+
+  function getChannelId() {
+    const handle = document.getElementById('handle').value;
+    // Ensure handle starts with @, add it if missing
+    const formattedHandle = handle.startsWith('@') ? handle : `@${handle}`;
+   
+    fetch(`https://www.googleapis.com/youtube/v3/channels?part=id&forHandle=${formattedHandle}&key=${apiKey}`)
+      .then(response => response.json())
+      .then(data => {
+        const channelId = data.items[0].id;
+        document.getElementById('result').innerHTML = `Channel ID: ${channelId}`;
+      })
+      .catch(error => {
+        document.getElementById('result').innerHTML = 'Error: Could not find channel. Check the handle and try again.';
+        console.error('Fetch error:', error);
+      });
+  }
+
 
   <script>
     // Paste your code here

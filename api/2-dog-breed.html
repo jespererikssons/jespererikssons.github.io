@@ -4,6 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <select id="breeds"></select>
+<button onclick="getDog()">Get Image</button>
+<img id="dogPic" src="">
+<script>
+  fetch('https://dog.ceo/api/breeds/list/all')
+    .then(res => res.json())
+    .then(data => {
+      const select = document.getElementById('breeds');
+      for (let breed in data.message) {
+        select.innerHTML += `<option value="${breed}">${breed}</option>`;
+      }
+    });
+  function getDog() {
+    const breed = document.getElementById('breeds').value;
+    fetch(`https://dog.ceo/api/breed/${breed}/images/random`)
+      .then(res => res.json())
+      .then(data => document.getElementById('dogPic').src = data.message);
+  }
+</script>
+
 </head>
 <body>
     <!-- Replace this with your code -->

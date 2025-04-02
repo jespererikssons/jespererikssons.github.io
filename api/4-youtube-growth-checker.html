@@ -9,7 +9,18 @@
     <input id="channelId" placeholder="Channel ID"><button onclick="getStats()">Get Stats</button>
     <div id="stats"></div>
     <script>
-      //Paste your code here
+           const apiKey = 'YOUR_API_KEY_HERE';
+  
+  function getStats() {
+    const id = document.getElementById('channelId').value;
+    fetch(`https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${id}&key=${apiKey}`)
+      .then(response => response.json())
+      .then(data => {
+        const stats = data.items[0].statistics;
+        document.getElementById('stats').innerHTML = `Subs: ${stats.subscriberCount}, Views: ${stats.viewCount}`;
+      });
+  }
+
     </script>
 </body>
 </html>
